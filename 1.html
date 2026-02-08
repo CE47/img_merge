@@ -2,31 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ImageStitch Pro | Enterprise Image Composition</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Stitcher | Professional Image Composition</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #dbeafe;
-            --secondary: #7c3aed;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --dark-gray: #374151;
-            --gray: #6b7280;
-            --light-gray: #f3f4f6;
-            --white: #ffffff;
-            --border-radius: 12px;
-            --border-radius-sm: 8px;
-            --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --box-shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --sidebar-width: 280px;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -34,403 +12,228 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: var(--dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1e293b;
             line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
         .app-container {
-            display: flex;
-            min-height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--white);
-            box-shadow: var(--box-shadow);
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-            position: relative;
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
         }
 
         .logo {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 16px;
         }
 
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--white);
-            font-size: 1.2rem;
+            color: white;
+            font-size: 20px;
         }
 
         .logo-text {
+            font-size: 28px;
             font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--dark);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .logo-subtext {
-            font-size: 0.75rem;
-            color: var(--gray);
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .app-version {
-            color: var(--gray);
-            font-size: 0.75rem;
-            margin-top: 4px;
-        }
-
-        .sidebar-section {
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--gray);
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            padding: 14px 16px;
-            background: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            color: var(--dark);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 10px;
-            text-align: left;
-        }
-
-        .action-btn:hover {
-            background: var(--light-gray);
-            border-color: var(--primary-light);
-            transform: translateY(-2px);
-        }
-
-        .action-btn.primary {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-        }
-
-        .action-btn.primary:hover {
-            background: var(--primary-dark);
-            border-color: var(--primary-dark);
-        }
-
-        .action-btn.success {
-            background: var(--success);
-            color: var(--white);
-            border-color: var(--success);
-        }
-
-        .action-btn.success:hover {
-            background: #0da271;
-            border-color: #0da271;
-        }
-
-        .action-btn.danger {
-            background: var(--danger);
-            color: var(--white);
-            border-color: var(--danger);
-        }
-
-        .action-btn.danger:hover {
-            background: #dc2626;
-            border-color: #dc2626;
-        }
-
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .action-btn i {
-            font-size: 1.1rem;
-        }
-
-        .stats {
-            background: var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            padding: 1.25rem;
-            margin-top: auto;
-        }
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.75rem;
-            font-size: 0.9rem;
-        }
-
-        .stat-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .stat-label {
-            color: var(--gray);
-        }
-
-        .stat-value {
-            font-weight: 600;
-            color: var(--dark);
+        .tagline {
+            color: #64748b;
+            font-size: 16px;
+            margin-top: 8px;
         }
 
         /* Main Content */
         .main-content {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            margin-bottom: 30px;
         }
 
-        .header {
+        /* Controls */
+        .controls {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .page-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .page-subtitle {
-            color: var(--gray);
-            font-size: 1rem;
-            margin-top: 0.5rem;
-            font-weight: 400;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
             gap: 12px;
-            background: var(--white);
-            padding: 10px 16px;
-            border-radius: var(--border-radius-sm);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
+            gap: 10px;
+            transition: all 0.2s ease;
+            min-width: 160px;
         }
 
-        .user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
         }
 
-        .user-role {
-            font-size: 0.75rem;
-            color: var(--gray);
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
         }
 
-        /* Dashboard Cards */
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
         }
 
-        .card {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 1.75rem;
-            transition: var(--transition);
+        .btn-success:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--box-shadow-lg);
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
         }
 
-        .card-title {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: var(--dark);
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: var(--white);
-        }
-
-        .card-icon.blue {
-            background: linear-gradient(135deg, var(--primary), #60a5fa);
-        }
-
-        .card-icon.purple {
-            background: linear-gradient(135deg, var(--secondary), #a78bfa);
-        }
-
-        .card-icon.green {
-            background: linear-gradient(135deg, var(--success), #34d399);
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         /* Upload Area */
         .upload-area {
             border: 2px dashed #cbd5e1;
-            border-radius: var(--border-radius);
-            padding: 3rem 2rem;
+            border-radius: 12px;
+            padding: 40px 20px;
             text-align: center;
-            background: var(--white);
-            transition: var(--transition);
+            background: #f8fafc;
+            transition: all 0.2s ease;
+            margin-bottom: 30px;
             cursor: pointer;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
         }
 
-        .upload-area:hover, .upload-area.dragover {
-            border-color: var(--primary);
-            background: var(--primary-light);
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
         }
 
         .upload-area.dragover {
+            border-color: #3b82f6;
+            background: #dbeafe;
             transform: scale(1.01);
         }
 
         .upload-icon {
-            font-size: 3.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            opacity: 0.8;
+            font-size: 48px;
+            color: #3b82f6;
+            margin-bottom: 16px;
         }
 
         .upload-text {
-            font-size: 1.2rem;
+            font-size: 18px;
             font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.75rem;
+            color: #1e293b;
+            margin-bottom: 8px;
         }
 
         .upload-subtext {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
 
         .file-input {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
             opacity: 0;
-            cursor: pointer;
+            width: 0;
+            height: 0;
         }
 
-        /* Selected Images */
-        .selected-images-container {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .section-header {
+        /* Image Selection */
+        .selection-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
-        .section-header h3 {
-            font-size: 1.3rem;
+        .selection-title {
+            font-size: 20px;
             font-weight: 600;
-            color: var(--dark);
+            color: #1e293b;
         }
 
         .image-counter {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 6px 14px;
+            background: #e0e7ff;
+            color: #3b82f6;
+            padding: 6px 16px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 14px;
         }
 
         .selected-images {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
-            min-height: 180px;
+            gap: 16px;
+            min-height: 200px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
         }
 
         .image-item {
             width: 140px;
-            height: 190px;
-            border-radius: var(--border-radius-sm);
+            height: 180px;
+            border-radius: 10px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
             cursor: move;
             user-select: none;
         }
 
         .image-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
         .image-item img {
@@ -440,36 +243,20 @@
             display: block;
         }
 
-        .image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 1rem 0.75rem 0.75rem;
-            color: var(--white);
-            transform: translateY(100%);
-            transition: var(--transition);
-        }
-
-        .image-item:hover .image-overlay {
-            transform: translateY(0);
-        }
-
         .image-index {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(0,0,0,0.7);
-            color: var(--white);
-            width: 28px;
-            height: 28px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 13px;
         }
 
         .image-remove {
@@ -477,15 +264,15 @@
             top: 10px;
             right: 10px;
             background: rgba(239, 68, 68, 0.9);
-            color: var(--white);
-            width: 28px;
-            height: 28px;
+            color: white;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.2s ease;
             opacity: 0;
         }
 
@@ -494,7 +281,7 @@
         }
 
         .image-remove:hover {
-            background: var(--danger);
+            background: #dc2626;
             transform: scale(1.1);
         }
 
@@ -504,35 +291,29 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 3rem 2rem;
-            color: var(--gray);
+            padding: 40px 20px;
+            color: #94a3b8;
             text-align: center;
         }
 
         .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
+            font-size: 48px;
+            margin-bottom: 16px;
             opacity: 0.5;
         }
 
         .empty-text {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--dark-gray);
+            font-size: 16px;
+            color: #64748b;
         }
 
-        .empty-subtext {
-            font-size: 0.9rem;
-            max-width: 400px;
-        }
-
-        /* Preview Container */
+        /* Preview */
         .preview-container {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 2rem;
-            margin-top: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            margin-top: 30px;
             display: none;
         }
 
@@ -540,13 +321,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 24px;
         }
 
         .preview-title {
-            font-size: 1.3rem;
+            font-size: 20px;
             font-weight: 600;
-            color: var(--dark);
+            color: #1e293b;
         }
 
         .preview-actions {
@@ -555,10 +336,10 @@
         }
 
         .preview-canvas-container {
-            background: var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
             text-align: center;
             overflow: auto;
         }
@@ -566,25 +347,52 @@
         #previewCanvas {
             max-width: 100%;
             height: auto;
-            border-radius: var(--border-radius-sm);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        /* Notifications */
+        .preview-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Notification */
         .notification {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
-            padding: 1.25rem 1.5rem;
-            border-radius: var(--border-radius-sm);
-            box-shadow: var(--box-shadow-lg);
+            top: 20px;
+            right: 20px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             max-width: 400px;
             z-index: 1000;
             transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .notification.show {
@@ -594,42 +402,29 @@
         .notification.success {
             background: #d1fae5;
             color: #065f46;
-            border-left: 4px solid var(--success);
+            border-left: 4px solid #10b981;
         }
 
         .notification.error {
             background: #fee2e2;
             color: #991b1b;
-            border-left: 4px solid var(--danger);
+            border-left: 4px solid #ef4444;
         }
 
         .notification.warning {
             background: #fef3c7;
             color: #92400e;
-            border-left: 4px solid var(--warning);
-        }
-
-        .notification.info {
-            background: #dbeafe;
-            color: #1e40af;
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid #f59e0b;
         }
 
         .notification-icon {
-            font-size: 1.4rem;
-        }
-
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 20px;
         }
 
         .notification-message {
-            font-size: 0.9rem;
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         .notification-close {
@@ -637,17 +432,12 @@
             border: none;
             color: inherit;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 18px;
             opacity: 0.7;
-            transition: var(--transition);
         }
 
-        .notification-close:hover {
-            opacity: 1;
-        }
-
-        /* Loading Overlay */
-        .loading-overlay {
+        /* Loading */
+        .loading {
             position: fixed;
             top: 0;
             left: 0;
@@ -659,327 +449,183 @@
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
+            display: none;
         }
 
-        .loading-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        .loading.active {
+            display: flex;
         }
 
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--light-gray);
-            border-top-color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #3b82f6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 1.5rem;
+            margin-bottom: 16px;
         }
 
         .loading-text {
             font-weight: 600;
-            color: var(--dark);
-            font-size: 1.1rem;
+            color: #1e293b;
+            font-size: 16px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
+        /* Drag and drop */
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #e0e7ff;
+            border-radius: 10px;
+        }
+
+        .sortable-chosen {
+            box-shadow: 0 0 0 3px #3b82f6;
+        }
+
         /* Responsive */
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
             .app-container {
+                padding: 10px;
+            }
+            
+            .main-content, .preview-container {
+                padding: 20px;
+            }
+            
+            .controls {
                 flex-direction: column;
             }
             
-            .sidebar {
+            .btn {
                 width: 100%;
-                padding: 1.5rem;
             }
             
-            .logo {
-                margin-bottom: 1.5rem;
-            }
-            
-            .stats {
-                margin-top: 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 1.5rem;
-            }
-            
-            .dashboard-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .image-item {
-                width: 120px;
-                height: 160px;
-            }
-            
-            .header {
+            .preview-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
+                gap: 16px;
             }
             
-            .user-profile {
-                align-self: flex-end;
-            }
-        }
-
-        @media (max-width: 480px) {
             .preview-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .action-btn {
                 width: 100%;
             }
             
             .selected-images {
                 justify-content: center;
             }
-        }
-
-        /* Drag and drop styling */
-        .sortable-ghost {
-            opacity: 0.4;
-            background: var(--primary-light);
-            border-radius: var(--border-radius-sm);
-        }
-
-        .sortable-chosen {
-            box-shadow: 0 0 0 3px var(--primary-light);
-        }
-
-        .sortable-drag {
-            transform: rotate(5deg);
+            
+            .image-item {
+                width: 120px;
+                height: 160px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
+        <!-- Header -->
+        <div class="header">
             <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-                <div>
-                    <div class="logo-text">ImageStitch Pro</div>
-                    <div class="logo-subtext">ENTERPRISE EDITION</div>
-                    <div class="app-version">v2.5.1</div>
-                </div>
+                <div class="logo-icon">📷</div>
+                <h1 class="logo-text">Image Stitcher</h1>
             </div>
-            
-            <div class="sidebar-section">
-                <div class="section-title">Workflow</div>
-                <button class="action-btn" onclick="document.getElementById('fileInput').click()">
-                    <i class="fas fa-folder-open"></i>
-                    <span>Select Images</span>
-                </button>
-                <button class="action-btn primary" id="stitchBtn" onclick="stitchImages()">
-                    <i class="fas fa-puzzle-piece"></i>
-                    <span>Stitch Images</span>
-                </button>
-                <button class="action-btn success" id="downloadBtn" onclick="downloadImage()" disabled>
-                    <i class="fas fa-download"></i>
-                    <span>Download Result</span>
-                </button>
-                <button class="action-btn danger" onclick="resetApp()">
-                    <i class="fas fa-trash-alt"></i>
-                    <span>Clear All</span>
-                </button>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="section-title">Export Options</div>
-                <button class="action-btn" onclick="exportAsPNG()">
-                    <i class="fas fa-file-image"></i>
-                    <span>Export as PNG</span>
-                </button>
-                <button class="action-btn" onclick="exportAsJPEG()">
-                    <i class="fas fa-file-image"></i>
-                    <span>Export as JPEG</span>
-                </button>
-                <button class="action-btn" onclick="shareImage()">
-                    <i class="fas fa-share-alt"></i>
-                    <span>Share Image</span>
-                </button>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-label">Images Selected:</span>
-                    <span class="stat-value" id="imageCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Total Size:</span>
-                    <span class="stat-value" id="totalSize">0 MB</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Last Export:</span>
-                    <span class="stat-value" id="lastExport">Never</span>
-                </div>
-            </div>
-        </aside>
+            <p class="tagline">Combine multiple portrait images into a single composition</p>
+        </div>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <header class="header">
-                <div>
-                    <h1 class="page-title">Image Composition Studio</h1>
-                    <p class="page-subtitle">Combine multiple portrait images into a single, professional composition</p>
-                </div>
-                <div class="user-profile">
-                    <div class="user-avatar">JD</div>
-                    <div>
-                        <div class="user-name">John Designer</div>
-                        <div class="user-role">Creative Director</div>
-                    </div>
-                </div>
-            </header>
-
-            <div class="dashboard-cards">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Quick Start</h3>
-                        <div class="card-icon blue">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                    </div>
-                    <p>Select portrait-oriented images and arrange them in your desired order. The app will automatically stitch them together into a single image.</p>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Quality Settings</h3>
-                        <div class="card-icon purple">
-                            <i class="fas fa-sliders-h"></i>
-                        </div>
-                    </div>
-                    <p>Output resolution is automatically optimized for your images. You can export as PNG (lossless) or JPEG (compressed).</p>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Enterprise Features</h3>
-                        <div class="card-icon green">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                    </div>
-                    <p>All processing happens locally in your browser. Your images are never uploaded to any server, ensuring complete privacy.</p>
-                </div>
+        <div class="main-content">
+            <!-- Controls -->
+            <div class="controls">
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    📁 Select Images
+                </button>
+                <button class="btn btn-success" id="stitchBtn" onclick="stitchImages()" disabled>
+                    🔗 Stitch Images
+                </button>
+                <button class="btn btn-danger" onclick="resetApp()">
+                    🗑️ Clear All
+                </button>
             </div>
 
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                </div>
-                <h3 class="upload-text">Drag & Drop Your Images Here</h3>
-                <p class="upload-subtext">Select portrait-oriented images (JPEG, PNG, WebP, GIF). Minimum 2 images required for stitching.</p>
-                <button class="action-btn primary">
-                    <i class="fas fa-folder-open"></i>
-                    <span>Browse Files</span>
+                <div class="upload-icon">📤</div>
+                <h3 class="upload-text">Drag & Drop Images Here</h3>
+                <p class="upload-subtext">Select portrait-oriented images (JPEG, PNG, WebP, GIF) or drag them here</p>
+                <button class="btn btn-primary">
+                    📁 Browse Files
                 </button>
                 <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
             </div>
 
             <!-- Selected Images -->
-            <div class="selected-images-container">
-                <div class="section-header">
-                    <h3>Selected Images</h3>
-                    <div class="image-counter">
-                        <span id="selectedCount">0</span> Images
-                    </div>
-                </div>
-                
-                <div class="selected-images" id="selectedImages">
-                    <div class="empty-state" id="emptyState">
-                        <div class="empty-icon">
-                            <i class="fas fa-images"></i>
-                        </div>
-                        <div class="empty-text">No images selected</div>
-                        <div class="empty-subtext">Select images using the upload area or the "Select Images" button in the sidebar.</div>
-                    </div>
-                </div>
-                
-                <div class="section-header" style="margin-top: 1.5rem; margin-bottom: 0;">
-                    <p style="color: var(--gray); font-size: 0.9rem;">
-                        <i class="fas fa-info-circle"></i> Drag and drop images to reorder them. The stitching will follow this order from left to right.
-                    </p>
+            <div class="selection-header">
+                <h3 class="selection-title">Selected Images</h3>
+                <div class="image-counter">
+                    <span id="imageCount">0</span> images
                 </div>
             </div>
+            
+            <div class="selected-images" id="selectedImages">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">📷</div>
+                    <div class="empty-text">No images selected yet</div>
+                </div>
+            </div>
+            
+            <p style="color: #64748b; font-size: 14px; margin-top: 16px;">
+                💡 Drag and drop to rearrange images. Images will be stitched from left to right.
+            </p>
+        </div>
 
-            <!-- Preview Container -->
-            <div class="preview-container" id="previewContainer">
-                <div class="preview-header">
-                    <h3 class="preview-title">Stitched Result</h3>
-                    <div class="preview-actions">
-                        <button class="action-btn" onclick="zoomIn()">
-                            <i class="fas fa-search-plus"></i>
-                            <span>Zoom In</span>
-                        </button>
-                        <button class="action-btn" onclick="zoomOut()">
-                            <i class="fas fa-search-minus"></i>
-                            <span>Zoom Out</span>
-                        </button>
-                        <button class="action-btn success" onclick="downloadImage()">
-                            <i class="fas fa-download"></i>
-                            <span>Download</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="preview-canvas-container">
-                    <canvas id="previewCanvas"></canvas>
-                </div>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Final Dimensions:</span>
-                        <span class="stat-value" id="finalDimensions">0 × 0 px</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">File Size:</span>
-                        <span class="stat-value" id="finalSize">0 KB</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Format:</span>
-                        <span class="stat-value" id="finalFormat">PNG</span>
-                    </div>
+        <!-- Preview -->
+        <div class="preview-container" id="previewContainer">
+            <div class="preview-header">
+                <h3 class="preview-title">Stitched Result</h3>
+                <div class="preview-actions">
+                    <button class="btn btn-primary" onclick="downloadImage()" id="downloadBtn" disabled>
+                        ⬇️ Download
+                    </button>
                 </div>
             </div>
-        </main>
+            
+            <div class="preview-canvas-container">
+                <canvas id="previewCanvas"></canvas>
+            </div>
+            
+            <div class="preview-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Dimensions</div>
+                    <div class="stat-value" id="finalDimensions">0 × 0 px</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">File Size</div>
+                    <div class="stat-value" id="finalSize">0 KB</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Format</div>
+                    <div class="stat-value" id="finalFormat">PNG</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Notification System -->
+    <!-- Notification -->
     <div class="notification" id="notification">
-        <div class="notification-icon" id="notificationIcon">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="notification-content">
-            <div class="notification-title" id="notificationTitle">Notification</div>
-            <div class="notification-message" id="notificationMessage">This is a notification message.</div>
-        </div>
-        <button class="notification-close" onclick="hideNotification()">
-            <i class="fas fa-times"></i>
-        </button>
+        <div class="notification-icon" id="notificationIcon">ℹ️</div>
+        <div class="notification-message" id="notificationMessage"></div>
+        <button class="notification-close" onclick="hideNotification()">×</button>
     </div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
+    <!-- Loading -->
+    <div class="loading" id="loading">
         <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">Processing Images...</div>
+        <div class="loading-text">Processing images...</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -987,14 +633,11 @@
         // Initialize variables
         let images = [];
         let sortableInstance = null;
-        let currentZoom = 1;
-        let lastExportTime = null;
         
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             initSortable();
-            updateUI();
         });
         
         function setupEventListeners() {
@@ -1004,13 +647,11 @@
             // File input change
             fileInput.addEventListener('change', function(e) {
                 handleFiles(e.target.files);
+                fileInput.value = '';
             });
             
             // Click on upload area
-            uploadArea.addEventListener('click', function(e) {
-                if (e.target.classList.contains('action-btn') || e.target.closest('.action-btn')) {
-                    return; // Don't trigger file input if clicking the button
-                }
+            uploadArea.addEventListener('click', function() {
                 fileInput.click();
             });
             
@@ -1037,7 +678,6 @@
                 animation: 200,
                 ghostClass: 'sortable-ghost',
                 chosenClass: 'sortable-chosen',
-                dragClass: 'sortable-drag',
                 onEnd: function() {
                     updateImageOrder();
                 }
@@ -1049,13 +689,12 @@
             
             const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
             let processedCount = 0;
-            let skippedCount = 0;
             
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 
                 if (!validTypes.includes(file.type)) {
-                    skippedCount++;
+                    showNotification(`Skipped "${file.name}" - Not an image file`, 'warning');
                     continue;
                 }
                 
@@ -1063,12 +702,6 @@
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
-                        // Check if image is portrait (height > width)
-                        if (img.width > img.height) {
-                            showNotification(`"${file.name}" is landscape orientation. Only portrait images will be stitched correctly.`, 'warning');
-                            // Still add it but warn the user
-                        }
-                        
                         addImage({
                             name: file.name,
                             src: e.target.result,
@@ -1079,12 +712,8 @@
                         });
                         processedCount++;
                         
-                        if (processedCount + skippedCount === files.length) {
-                            if (skippedCount > 0) {
-                                showNotification(`Added ${processedCount} images. Skipped ${skippedCount} non-image files.`, 'info');
-                            } else {
-                                showNotification(`Successfully added ${processedCount} images`, 'success');
-                            }
+                        if (processedCount === Math.min(files.length, 10)) { // Limit to 10 images
+                            showNotification(`Added ${processedCount} images`, 'success');
                         }
                     };
                     img.src = e.target.result;
@@ -1117,21 +746,15 @@
                 div.dataset.index = index;
                 
                 div.innerHTML = `
-                    <img src="${img.src}" alt="Selected image ${index + 1}">
+                    <img src="${img.src}" alt="Image ${index + 1}">
                     <div class="image-index">${index + 1}</div>
-                    <div class="image-overlay">
-                        <div style="font-size: 0.8rem; margin-bottom: 2px;">${img.name}</div>
-                        <div style="font-size: 0.7rem; opacity: 0.8;">${img.width} × ${img.height}</div>
-                    </div>
-                    <div class="image-remove" onclick="removeImage(${index})">
-                        <i class="fas fa-times"></i>
-                    </div>
+                    <div class="image-remove" onclick="removeImage(${index})">×</div>
                 `;
                 
                 container.appendChild(div);
             });
             
-            updateStats();
+            document.getElementById('imageCount').textContent = images.length;
         }
         
         function updateImageOrder() {
@@ -1152,7 +775,7 @@
             images.splice(index, 1);
             renderImages();
             updateUI();
-            showNotification('Image removed', 'info');
+            showNotification('Image removed', 'success');
         }
         
         function stitchImages() {
@@ -1161,33 +784,21 @@
                 return;
             }
             
-            showLoading(true, 'Stitching images...');
+            showLoading(true);
             
-            // Calculate total width and max height with some padding
+            // Calculate dimensions
             let totalWidth = 0;
             let maxHeight = 0;
-            const padding = 0; // No padding between images
             
-            // Scale images to have same height (use the max height of all images)
-            images.forEach(img => {
-                maxHeight = Math.max(maxHeight, img.height);
-            });
+            // Use first image's height as base
+            const baseHeight = images[0].height;
             
-            // Cap max height to prevent memory issues
-            const MAX_HEIGHT = 1200;
-            if (maxHeight > MAX_HEIGHT) {
-                maxHeight = MAX_HEIGHT;
-            }
-            
-            // Calculate scaled widths
             images.forEach(img => {
                 const aspectRatio = img.width / img.height;
-                const scaledWidth = maxHeight * aspectRatio;
-                totalWidth += scaledWidth + padding;
+                const scaledWidth = baseHeight * aspectRatio;
+                totalWidth += scaledWidth;
+                maxHeight = Math.max(maxHeight, baseHeight);
             });
-            
-            // Remove last padding
-            totalWidth -= padding;
             
             // Create canvas
             const canvas = document.getElementById('previewCanvas');
@@ -1210,10 +821,10 @@
                     const img = new Image();
                     img.onload = function() {
                         const aspectRatio = img.width / img.height;
-                        const scaledWidth = maxHeight * aspectRatio;
+                        const scaledWidth = baseHeight * aspectRatio;
                         
-                        ctx.drawImage(img, currentX, 0, scaledWidth, maxHeight);
-                        currentX += scaledWidth + padding;
+                        ctx.drawImage(img, currentX, 0, scaledWidth, baseHeight);
+                        currentX += scaledWidth;
                         resolve();
                     };
                     img.src = imgData.src;
@@ -1234,28 +845,23 @@
                 // Enable download button
                 document.getElementById('downloadBtn').disabled = false;
                 
-                // Update last export time
-                lastExportTime = new Date();
-                document.getElementById('lastExport').textContent = formatTime(lastExportTime);
-                
                 showNotification(`${images.length} images stitched successfully!`, 'success');
                 
                 // Scroll to preview
                 document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
             }).catch(error => {
                 showLoading(false);
-                showNotification('Error stitching images: ' + error.message, 'error');
+                showNotification('Error stitching images', 'error');
             });
         }
         
         function updateFinalImageStats() {
             const canvas = document.getElementById('previewCanvas');
             const dataUrl = canvas.toDataURL('image/png');
-            const sizeInKB = Math.round(dataUrl.length * 0.75 / 1024); // Approximate size
+            const sizeInKB = Math.round(dataUrl.length * 0.75 / 1024);
             
             document.getElementById('finalDimensions').textContent = `${canvas.width} × ${canvas.height} px`;
             document.getElementById('finalSize').textContent = `${sizeInKB} KB`;
-            document.getElementById('finalFormat').textContent = 'PNG';
         }
         
         function downloadImage() {
@@ -1271,85 +877,6 @@
             link.click();
             
             showNotification('Image downloaded successfully', 'success');
-        }
-        
-        function exportAsPNG() {
-            const canvas = document.getElementById('previewCanvas');
-            if (!canvas.width || !canvas.height) {
-                showNotification('No stitched image available', 'error');
-                return;
-            }
-            
-            const link = document.createElement('a');
-            link.download = `stitched-image-${new Date().toISOString().slice(0,10)}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            
-            showNotification('Exported as PNG', 'success');
-        }
-        
-        function exportAsJPEG() {
-            const canvas = document.getElementById('previewCanvas');
-            if (!canvas.width || !canvas.height) {
-                showNotification('No stitched image available', 'error');
-                return;
-            }
-            
-            const link = document.createElement('a');
-            link.download = `stitched-image-${new Date().toISOString().slice(0,10)}.jpg`;
-            link.href = canvas.toDataURL('image/jpeg', 0.9);
-            link.click();
-            
-            showNotification('Exported as JPEG (90% quality)', 'success');
-        }
-        
-        function shareImage() {
-            if (!navigator.share) {
-                showNotification('Web Share API is not supported in your browser', 'warning');
-                return;
-            }
-            
-            const canvas = document.getElementById('previewCanvas');
-            if (!canvas.width || !canvas.height) {
-                showNotification('No stitched image available', 'error');
-                return;
-            }
-            
-            canvas.toBlob(blob => {
-                const file = new File([blob], 'stitched-image.png', { type: 'image/png' });
-                
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    navigator.share({
-                        files: [file],
-                        title: 'Stitched Image',
-                        text: 'Created with ImageStitch Pro'
-                    });
-                } else {
-                    showNotification('Sharing files is not supported on this device', 'warning');
-                }
-            });
-        }
-        
-        function zoomIn() {
-            const canvas = document.getElementById('previewCanvas');
-            const container = document.querySelector('.preview-canvas-container');
-            
-            currentZoom = Math.min(currentZoom * 1.2, 3);
-            canvas.style.transform = `scale(${currentZoom})`;
-            canvas.style.transformOrigin = 'center top';
-            
-            showNotification(`Zoom: ${Math.round(currentZoom * 100)}%`, 'info');
-        }
-        
-        function zoomOut() {
-            const canvas = document.getElementById('previewCanvas');
-            const container = document.querySelector('.preview-canvas-container');
-            
-            currentZoom = Math.max(currentZoom / 1.2, 0.5);
-            canvas.style.transform = `scale(${currentZoom})`;
-            canvas.style.transformOrigin = 'center top';
-            
-            showNotification(`Zoom: ${Math.round(currentZoom * 100)}%`, 'info');
         }
         
         function resetApp() {
@@ -1371,64 +898,32 @@
             stitchBtn.disabled = images.length < 2;
         }
         
-        function updateStats() {
-            document.getElementById('imageCount').textContent = images.length;
-            document.getElementById('selectedCount').textContent = images.length;
-            
-            let totalSize = 0;
-            images.forEach(img => {
-                totalSize += img.size || 0;
-            });
-            
-            const sizeInMB = (totalSize / (1024 * 1024)).toFixed(2);
-            document.getElementById('totalSize').textContent = `${sizeInMB} MB`;
-        }
-        
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             const notificationIcon = document.getElementById('notificationIcon');
-            const notificationTitle = document.getElementById('notificationTitle');
             const notificationMessage = document.getElementById('notificationMessage');
             
-            // Set notification content
+            // Set message
             notificationMessage.textContent = message;
             
-            // Set notification type
+            // Set type
             notification.className = `notification ${type}`;
             
-            // Set icon based on type
-            let iconClass = 'fas fa-info-circle';
-            let title = 'Information';
+            // Set icon
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'error') icon = '❌';
+            if (type === 'warning') icon = '⚠️';
             
-            switch(type) {
-                case 'success':
-                    iconClass = 'fas fa-check-circle';
-                    title = 'Success';
-                    break;
-                case 'error':
-                    iconClass = 'fas fa-exclamation-circle';
-                    title = 'Error';
-                    break;
-                case 'warning':
-                    iconClass = 'fas fa-exclamation-triangle';
-                    title = 'Warning';
-                    break;
-                case 'info':
-                default:
-                    iconClass = 'fas fa-info-circle';
-                    title = 'Information';
-            }
+            notificationIcon.textContent = icon;
             
-            notificationIcon.innerHTML = `<i class="${iconClass}"></i>`;
-            notificationTitle.textContent = title;
-            
-            // Show notification
+            // Show
             notification.classList.add('show');
             
-            // Auto-hide after 5 seconds
+            // Auto-hide
             setTimeout(() => {
                 hideNotification();
-            }, 5000);
+            }, 4000);
         }
         
         function hideNotification() {
@@ -1436,32 +931,9 @@
             notification.classList.remove('show');
         }
         
-        function showLoading(show, text = 'Processing...') {
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const loadingText = document.getElementById('loadingText');
-            
-            loadingText.textContent = text;
-            
-            if (show) {
-                loadingOverlay.classList.add('active');
-            } else {
-                loadingOverlay.classList.remove('active');
-            }
-        }
-        
-        function formatTime(date) {
-            if (!date) return 'Never';
-            
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            
-            if (diffMins < 1) return 'Just now';
-            if (diffMins < 60) return `${diffMins} minutes ago`;
-            if (diffHours < 24) return `${diffHours} hours ago`;
-            
-            return date.toLocaleDateString();
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            loading.classList.toggle('active', show);
         }
     </script>
 </body>
