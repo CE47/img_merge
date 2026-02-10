@@ -286,6 +286,8 @@
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
+            setupPasteListener();  
+            setupKeyboardFeedback();  
             initSortable();
         });
         
@@ -316,6 +318,76 @@
             });
         }
         
+        function setupPasteListener() {
+            // Listen for paste events on the entire document
+            document.addEventListener('paste', function(e) {
+                // Check if there are clipboard items
+                if (!e.clipboardData || !e.clipboardData.items) return;
+                
+                // Get clipboard items
+                const items = e.clipboardData.items;
+                let imageFiles = [];
+                
+                // Loop through clipboard items to find images
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    
+                    // Check if the item is an image
+                    if (item.type.indexOf('image') !== -1) {
+                        // Get the image as a file
+                        const file = item.getAsFile();
+                        if (file) {
+                            imageFiles.push(file);
+                        }
+                    }
+                }
+                
+                // If we found images, handle them
+                if (imageFiles.length > 0) {
+                    e.preventDefault(); // Prevent default paste behavior
+                    
+                    // Create a FileList-like object
+                    const dataTransfer = new DataTransfer();
+                    imageFiles.forEach(file => dataTransfer.items.add(file));
+                    
+                    // Handle the files
+                    handleFiles(dataTransfer.files);
+                    
+                    // Show a success message
+                    showStatus(`Pasted ${imageFiles.length} image(s) from clipboard`, 'success');
+                }
+            });
+            
+            // Optional: Add some visual feedback for paste area
+            const dropArea = document.getElementById('dropArea');
+            dropArea.innerHTML += '<div style="font-size: 12px; margin-top: 10px; color: #666;">(Ctrl+V also works!)</div>';
+        }
+        
+        function setupKeyboardFeedback() {
+            let pasteKeyPressed = false;
+            
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+                    pasteKeyPressed = true;
+                    const dropArea = document.getElementById('dropArea');
+                    dropArea.style.backgroundColor = 'rgba(0,122,255,0.15)';
+                    dropArea.style.borderColor = '#0056CC';
+                    dropArea.style.transform = 'scale(1.02)';
+                    dropArea.style.transition = 'all 0.2s';
+                }
+            });
+            
+            document.addEventListener('keyup', function(e) {
+                if (pasteKeyPressed && e.key === 'v') {
+                    pasteKeyPressed = false;
+                    const dropArea = document.getElementById('dropArea');
+                    dropArea.style.backgroundColor = '';
+                    dropArea.style.borderColor = '';
+                    dropArea.style.transform = '';
+                }
+            });
+        }
+
         function initSortable() {
             const selectedImages = document.getElementById('selectedImages');
             SortableInstance = new Sortable(selectedImages, {
@@ -519,10 +591,14 @@
             statusDiv.className = `status ${type}`;
             statusDiv.style.display = 'block';
             
+            // For clipboard pastes, show for shorter time
+            const isPasteMessage = message.includes('pasted') || message.includes('clipboard');
+            const displayTime = isPasteMessage ? 1500 : 3000;
+            
             if (type === 'success') {
                 setTimeout(() => {
                     statusDiv.style.display = 'none';
-                }, 3000);
+                }, displayTime);
             }
         }
         
