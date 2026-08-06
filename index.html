@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portrait Image Stitcher</title>
+    <title>Image Stitcher</title>
     <style>
         * {
             margin: 0;
@@ -235,13 +235,14 @@
     </style>
 </head>
 <body>
-    <h1>📱 Portrait Image Stitcher</h1>
+    <h1>🖼️ Image Stitcher</h1>
     
     <div class="instructions">
         <p><strong>How to use:</strong></p>
         <ol>
-            <li>Select multiple portrait images using the button or drop them in the area</li>
-            <li>Drag and drop to arrange them in the desired order (left to right)</li>
+            <li>Select multiple images using the button or drop them in the area</li>
+            <li>Drag and drop to arrange them in the desired order</li>
+            <li>Choose merge direction (horizontal or vertical)</li>
             <li>Click "Stitch Images" to combine them into one image</li>
             <li>Download the final stitched image</li>
         </ol>
@@ -252,6 +253,16 @@
         <button onclick="document.getElementById('imageInput').click()">📁 Select Images</button>
         <button id="stitchBtn" onclick="stitchImages()">🔄 Stitch Images</button>
         <button id="resetBtn" onclick="resetApp()">🗑️ Reset All</button>
+    </div>
+    
+    <div class="controls">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 16px; padding: 12px 20px; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); flex: 1;">
+            📐 Direction:
+            <select id="directionSelect" style="padding: 8px 12px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; background: white; flex: 1;">
+                <option value="horizontal">Horizontal (side by side)</option>
+                <option value="vertical">Vertical (top to bottom)</option>
+            </select>
+        </label>
     </div>
     
     <div class="drop-area" id="dropArea">
@@ -417,12 +428,6 @@
                 reader.onload = function(e) {
                     const img = new Image();
                     img.onload = function() {
-                        // Check if image is portrait (height > width)
-                        if (img.width > img.height) {
-                            showStatus(`"${file.name}" is not a portrait image. Please select portrait images.`, 'error');
-                            return;
-                        }
-                        
                         addImage({
                             name: file.name,
                             src: e.target.result,
@@ -496,76 +501,107 @@
             
             showLoading(true);
             
-            // Calculate total width and max height
-            let totalWidth = 0;
-            let maxHeight = 0;
-            
-            // First pass to calculate dimensions
-            images.forEach(img => {
-                const aspectRatio = img.width / img.height;
-                // Scale images to have same height
-                const targetHeight = 800; // You can adjust this value
-                const scaledWidth = targetHeight * aspectRatio;
-                
-                totalWidth += scaledWidth;
-                maxHeight = Math.max(maxHeight, targetHeight);
-            });
-            
-            // Create canvas
+            const direction = document.getElementById('directionSelect').value;
             const canvas = document.getElementById('previewCanvas');
             const ctx = canvas.getContext('2d');
             
-            // Set canvas dimensions
-            canvas.width = totalWidth;
-            canvas.height = maxHeight;
-            
-            // Fill background with white
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw images
-            let currentX = 0;
-            const promises = [];
-            
-            images.forEach((imgData, index) => {
-                const promise = new Promise((resolve) => {
-                    const img = new Image();
-                    img.onload = function() {
-                        const aspectRatio = img.width / img.height;
-                        const targetHeight = 800; // Same as above
-                        const scaledWidth = targetHeight * aspectRatio;
-                        
-                        ctx.drawImage(img, currentX, 0, scaledWidth, targetHeight);
-                        currentX += scaledWidth;
-                        resolve();
-                    };
-                    img.src = imgData.src;
+            if (direction === 'horizontal') {
+                // Horizontal: scale all images to same height, place side by side
+                const targetHeight = 800;
+                let totalWidth = 0;
+                
+                images.forEach(img => {
+                    const aspectRatio = img.width / img.height;
+                    totalWidth += targetHeight * aspectRatio;
                 });
-                promises.push(promise);
-            });
+                
+                canvas.width = totalWidth;
+                canvas.height = targetHeight;
+                
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                let drawChain = Promise.resolve();
+                let xPos = 0;
+                images.forEach((imgData) => {
+                    drawChain = drawChain.then(() => {
+                        return new Promise((resolve) => {
+                            const img = new Image();
+                            img.onload = function() {
+                                const aspectRatio = img.width / img.height;
+                                const scaledWidth = targetHeight * aspectRatio;
+                                ctx.drawImage(img, xPos, 0, scaledWidth, targetHeight);
+                                xPos += scaledWidth;
+                                resolve();
+                            };
+                            img.src = imgData.src;
+                        });
+                    });
+                });
+                
+                drawChain.then(() => {
+                    finishStitch(canvas);
+                }).catch(error => {
+                    showLoading(false);
+                    showStatus('Error stitching images: ' + error.message, 'error');
+                });
+                
+            } else {
+                // Vertical: scale all images to same width, stack top to bottom
+                const targetWidth = 800;
+                let totalHeight = 0;
+                
+                images.forEach(img => {
+                    const aspectRatio = img.height / img.width;
+                    totalHeight += targetWidth * aspectRatio;
+                });
+                
+                canvas.width = targetWidth;
+                canvas.height = totalHeight;
+                
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                let drawChain = Promise.resolve();
+                let yPos = 0;
+                images.forEach((imgData) => {
+                    drawChain = drawChain.then(() => {
+                        return new Promise((resolve) => {
+                            const img = new Image();
+                            img.onload = function() {
+                                const aspectRatio = img.height / img.width;
+                                const scaledHeight = targetWidth * aspectRatio;
+                                ctx.drawImage(img, 0, yPos, targetWidth, scaledHeight);
+                                yPos += scaledHeight;
+                                resolve();
+                            };
+                            img.src = imgData.src;
+                        });
+                    });
+                });
+                
+                drawChain.then(() => {
+                    finishStitch(canvas);
+                }).catch(error => {
+                    showLoading(false);
+                    showStatus('Error stitching images: ' + error.message, 'error');
+                });
+            }
+        }
+        
+        function finishStitch(canvas) {
+            showLoading(false);
             
-            // Wait for all images to load and draw
-            Promise.all(promises).then(() => {
-                showLoading(false);
-                
-                // Convert canvas to data URL
-                const dataUrl = canvas.toDataURL('image/png');
-                
-                // Create download link
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = dataUrl;
-                downloadLink.download = `stitched-${Date.now()}.png`;
-                
-                // Show preview
-                document.getElementById('previewContainer').style.display = 'block';
-                showStatus('Images stitched successfully! Click download to save.', 'success');
-                
-                // Scroll to preview
-                document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
-            }).catch(error => {
-                showLoading(false);
-                showStatus('Error stitching images: ' + error.message, 'error');
-            });
+            const dataUrl = canvas.toDataURL('image/png');
+            
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = dataUrl;
+            downloadLink.download = `stitched-${Date.now()}.png`;
+            
+            document.getElementById('previewContainer').style.display = 'block';
+            showStatus('Images stitched successfully! Click download to save.', 'success');
+            
+            document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
         }
         
         function resetApp() {
