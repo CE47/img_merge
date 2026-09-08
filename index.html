@@ -243,8 +243,9 @@
             <li>Select multiple images using the button or drop them in the area</li>
             <li>Drag and drop to arrange them in the desired order</li>
             <li>Choose merge direction (horizontal or vertical)</li>
+            <li>Choose output format (PNG image or PDF document)</li>
             <li>Click "Stitch Images" to combine them into one image</li>
-            <li>Download the final stitched image</li>
+            <li>Download the final stitched image or PDF</li>
         </ol>
     </div>
     
@@ -261,6 +262,13 @@
             <select id="directionSelect" style="padding: 8px 12px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; background: white; flex: 1;">
                 <option value="horizontal">Horizontal (side by side)</option>
                 <option value="vertical">Vertical (top to bottom)</option>
+            </select>
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 16px; padding: 12px 20px; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); flex: 1;">
+            📄 Output:
+            <select id="formatSelect" style="padding: 8px 12px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; background: white; flex: 1;">
+                <option value="png">PNG image</option>
+                <option value="pdf">PDF document</option>
             </select>
         </label>
     </div>
@@ -290,6 +298,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
         let images = [];
         let SortableInstance = null;
@@ -591,16 +600,47 @@
         
         function finishStitch(canvas) {
             showLoading(false);
-            
-            const dataUrl = canvas.toDataURL('image/png');
-            
+
+            const format = document.getElementById('formatSelect').value;
             const downloadLink = document.getElementById('downloadLink');
-            downloadLink.href = dataUrl;
-            downloadLink.download = `stitched-${Date.now()}.png`;
-            
+            const timestamp = Date.now();
+
+            if (format === 'pdf') {
+                try {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+
+                    // Page orientation based on the stitched canvas shape
+                    const orientation = canvas.width >= canvas.height ? 'landscape' : 'portrait';
+
+                    // Use the canvas pixel dimensions as PDF units (px) so the
+                    // image fills the page exactly at 1:1 with no distortion.
+                    const pdf = new jsPDF({
+                        orientation: orientation,
+                        unit: 'px',
+                        format: [canvas.width, canvas.height]
+                    });
+
+                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+
+                    const blobUrl = pdf.output('bloburl');
+                    downloadLink.href = blobUrl;
+                    downloadLink.download = `stitched-${timestamp}.pdf`;
+                    downloadLink.textContent = '⬇️ Download PDF';
+                } catch (err) {
+                    showStatus('Error creating PDF: ' + err.message, 'error');
+                    return;
+                }
+            } else {
+                const dataUrl = canvas.toDataURL('image/png');
+                downloadLink.href = dataUrl;
+                downloadLink.download = `stitched-${timestamp}.png`;
+                downloadLink.textContent = '⬇️ Download Image';
+            }
+
             document.getElementById('previewContainer').style.display = 'block';
             showStatus('Images stitched successfully! Click download to save.', 'success');
-            
+
             document.getElementById('previewContainer').scrollIntoView({ behavior: 'smooth' });
         }
         
